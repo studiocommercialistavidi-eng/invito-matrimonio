@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Invito Vincenzo & Maria</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #b8926a;
+            --gold-light: #d4af37;
+            --dark: #2d3436;
+            --gray: #636e72;
+            --ivory: #fcf8f0;
+            --water: rgba(184, 146, 106, 0.08);
+        }
+
+        body {
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-image: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .main-card {
+            width: 100%;
+            max-width: 400px;
+            height: 100%;
+            background: var(--ivory);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+
+        @media (min-width: 640px) {
+            .main-card {
+                height: 92vh;
+                max-height: 800px;
+                border-radius: 24px;
+            }
+        }
+
+        /* Sfondo Parallasse */
+        .card-bg-image {
+            position: absolute;
+            top: -15%;
+            left: -15%;
+            width: 130%;
+            height: 130%;
+            background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1000');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            z-index: 0;
+            transition: transform 0.1s ease-out;
+            filter: sepia(30%);
+            pointer-events: none;
+        }
+
+        /* Effetto superficie acqua */
+        .water-surface {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20%;
+            background: linear-gradient(to top, var(--water), transparent);
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* Petali */
+        .petal {
+            position: absolute;
+            background: linear-gradient(135deg, #d4af37, #f1d592);
+            border-radius: 150% 0 150% 0;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        @keyframes fallInside {
+            0% { top: -10%; transform: rotate(0deg) translateX(0); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { top: var(--settle-top); transform: rotate(720deg) translateX(var(--drift)); opacity: 0.35; }
+        }
+
+        @keyframes floatSettle {
+            0% { transform: rotate(720deg) translateX(var(--drift)) translateY(0); }
+            100% { transform: rotate(725deg) translateX(calc(var(--drift) + 8px)) translateY(-4px); }
+        }
+
+        /* Increspature dell'acqua (Ripples) */
+        .ripple {
+            position: absolute;
+            border: 1px solid var(--gold-light);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 4;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0.4;
+            animation: rippleEffect 2.5s ease-out forwards;
+        }
+
+        @keyframes rippleEffect {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(5); opacity: 0; }
+        }
+
+        /* Pulsante Musica */
+        .music-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 38px;
+            height: 38px;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 100;
+            cursor: pointer;
+            border: 1px solid rgba(184, 146, 106, 0.3);
+            color: var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+            background: white;
+            box-shadow: 0 6px 15px rgba(184, 146, 106, 0.2);
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+
+        .content-overlay {
+            position: relative;
+            z-index: 50;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 25px;
+            text-align: center;
+        }
+
+        .name { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 6vh, 2.2rem); color: var(--dark); line-height: 1.1; }
+        .surname { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; color: var(--gray); margin-top: 2px; }
+        .ampersand { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; color: var(--gold); margin: 2px 0; }
+
+        /* Stile Pulsanti Azione */
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 40px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%;
+            max-width: 190px;
+            text-decoration: none !important;
+            position: relative;
+            cursor: pointer;
+            gap: 8px;
+        }
+        
+        .btn-gold { 
+            border: 2px solid var(--gold); 
+            color: var(--gold); 
+            background: rgba(255, 255, 255, 0.6); 
+            animation: pulseGold 3s infinite;
+        }
+
+        .btn-gold:hover {
+            background: var(--gold);
+            color: white !important;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(184, 146, 106, 0.3);
+        }
+
+        .btn-rsvp { 
+            background: var(--dark); 
+            color: white !important; 
+            border: none; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15); 
+            animation: pulseDark 3s infinite 1.5s;
+        }
+
+        .btn-rsvp:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            background: #1a1e1f;
+        }
+
+        @keyframes pulseGold {
+            0% { box-shadow: 0 0 0 0 rgba(184, 146, 106, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(184, 146, 106, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(184, 146, 106, 0); }
+        }
+
+        @keyframes pulseDark {
+            0% { box-shadow: 0 0 0 0 rgba(45, 52, 70, 0.3); }
+            70% { box-shadow: 0 0 0 12px rgba(45, 52, 70, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(45, 52, 70, 0); }
+        }
+
+        /* Sezione IBAN */
+        .iban-container {
+            width: 100%;
+            max-width: 320px;
+            padding: 12px 10px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            position: relative;
+        }
+        
+        .iban-container:hover {
+            background: rgba(255, 255, 255, 0.6);
+            border-color: var(--gold-light);
+        }
+
+        .iban-text {
+            font-size: 0.6rem;
+            color: var(--gold);
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .iban-owners {
+            font-size: 0.6rem;
+            color: var(--dark);
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .iban-code-wrapper {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px;
+            border-radius: 12px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .iban-code-wrapper:active {
+            transform: scale(0.97);
+            background: white;
+        }
+
+        .iban-code {
+            font-family: monospace;
+            font-size: 0.6rem;
+            color: var(--dark);
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn {
+            background: var(--gold);
+            color: white;
+            border: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            flex-shrink: 0;
+        }
+
+        .copy-btn.copied {
+            background: #27ae60;
+            transform: scale(1.15);
+        }
+
+        #toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(45, 52, 70, 0.95);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2000;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" preload="auto" loop crossorigin="anonymous">
+        <source src="https://res.cloudinary.com/dittjewrb/video/upload/v1768950362/Akazas_Requiem_drwy6v.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="main-card" id="card-container">
+        <div class="card-bg-image" id="bg-parallax"></div>
+        <div class="water-surface"></div>
+
+        <div class="music-btn" id="music-btn" title="Riproduci musica">
+            <svg id="music-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+        </div>
+
+        <div class="content-overlay">
+            <!-- Header -->
+            <div class="fade-in-up">
+                <div style="width: 30px; height: 1px; background: var(--gold); margin: 0 auto 6px; opacity: 0.6;"></div>
+                <h2 style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 3px; color: var(--gold); font-weight: 600;">Promessa di Matrimonio</h2>
+            </div>
+
+            <!-- Nomi -->
+            <div class="fade-in-up delay-1">
+                <div class="name">Vincenzo</div>
+                <div class="surname">D’Alessandro</div>
+                <div class="ampersand">&</div>
+                <div class="name">Maria</div>
+                <div class="surname">Giardino</div>
+            </div>
+
+            <!-- Location e Mappa (URL corretto per PC) -->
+            <div class="w-full fade-in-up delay-2">
+                <div style="font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--dark); margin-bottom: 2px; font-weight: 700;">15 Maggio 2026 • 20:00</div>
+                <div style="font-size: 0.8rem; color: var(--gray); line-height: 1.4; margin-bottom: 8px;">Villa Santa Chiara, Casoria (NA)</div>
+                <!-- Utilizzo link diretto per evitare errori Dynamic Link su Desktop -->
+                <a href="https://www.google.com/maps/search/?api=1&query=Villa+Santa+Chiara+Casoria" target="_blank" class="btn-action btn-gold mx-auto">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    Mappa
+                </a>
+            </div>
+
+            <!-- Sezione IBAN -->
+            <div class="iban-container fade-in-up delay-2">
+                <div class="iban-text">"Il nostro sogno ha bisogno di te"</div>
+                <div class="iban-owners">Vincenzo D’Alessandro & Maria Giardino</div>
+                
+                <div class="iban-code-wrapper" onclick="copyIban()" style="cursor: pointer;">
+                    <div class="iban-code" id="iban">IT54Y0366901600194072133188</div>
+                    <button class="copy-btn" id="copy-btn">
+                        <svg id="copy-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div style="font-size: 0.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; opacity: 0.8; font-weight: 600;">Tocca per copiare l'IBAN</div>
+            </div>
+
+            <!-- RSVP -->
+            <div class="fade-in-up delay-3 w-full">
+                <a href="https://wa.me/393667489633?text=Ciao!%20Confermiamo%20la%20nostra%20presenza!" target="_blank" class="btn-action btn-rsvp mx-auto">
+                    Conferma Presenza
+                </a>
+            </div>
+        </div>
+
+        <div id="toast">IBAN Copiato 📋</div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+        const musicIcon = document.getElementById('music-icon');
+        const parallaxBg = document.getElementById('bg-parallax');
+        const card = document.getElementById('card-container');
+        const copyBtn = document.getElementById('copy-btn');
+        const copyIcon = document.getElementById('copy-icon');
+
+        // Effetto Parallasse desktop
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth);
+            const y = (e.clientY / window.innerHeight);
+            const moveX = (x - 0.5) * 30;
+            const moveY = (y - 0.5) * 30;
+            if(parallaxBg) parallaxBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
+
+        // Gestione Musica
+        musicBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (audio.paused) {
+                audio.play().then(() => {
+                    musicBtn.style.background = 'var(--gold)';
+                    musicBtn.style.color = 'white';
+                    musicIcon.innerHTML = '<rect x="7" y="5" width="3" height="14"></rect><rect x="14" y="5" width="3" height="14"></rect>';
+                }).catch(err => console.log("Audio play blocked"));
+            } else {
+                audio.pause();
+                musicBtn.style.background = 'rgba(255,255,255,0.85)';
+                musicBtn.style.color = 'var(--gold)';
+                musicIcon.innerHTML = '<path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>';
+            }
+        });
+
+        // Ripples nell'acqua
+        function createRipple(x, y) {
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            card.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 2500);
+        }
+
+        // Sistema Petali
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            const size = Math.random() * 7 + 5 + 'px';
+            petal.style.width = size; petal.style.height = size;
+            
+            const cardWidth = card.clientWidth;
+            const startX = Math.random() * (cardWidth - 20);
+            petal.style.left = startX + 'px';
+            
+            const duration = Math.random() * 3 + 6;
+            const driftVal = (Math.random() - 0.5) * 70;
+            const settleTopVal = (94 + Math.random() * 2);
+            
+            petal.style.setProperty('--settle-top', settleTopVal + '%');
+            petal.style.setProperty('--drift', driftVal + 'px');
+            petal.style.animation = `fallInside ${duration}s linear forwards`;
+
+            card.appendChild(petal);
+
+            setTimeout(() => {
+                const finalX = startX + driftVal;
+                const finalY = (card.clientHeight * settleTopVal) / 100;
+                createRipple(finalX, finalY);
+                petal.style.animation = `floatSettle 4s ease-in-out infinite alternate`;
+            }, duration * 1000);
+
+            setTimeout(() => {
+                petal.style.opacity = '0';
+                setTimeout(() => petal.remove(), 1000);
+            }, 15000);
+        }
+
+        setInterval(createPetal, 2000);
+
+        // Copia IBAN
+        function copyIban() {
+            const iban = document.getElementById('iban').innerText;
+            const temp = document.createElement('textarea');
+            temp.value = iban;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            
+            copyBtn.classList.add('copied');
+            copyIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+            
+            const toast = document.getElementById('toast');
+            toast.style.opacity = '1';
+            
+            setTimeout(() => { 
+                toast.style.opacity = '0'; 
+                copyBtn.classList.remove('copied');
+                copyIcon.innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
