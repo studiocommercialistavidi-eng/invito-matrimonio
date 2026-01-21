@@ -9,8 +9,10 @@
     <!-- Meta Tag per l'anteprima di WhatsApp (Open Graph) -->
     <meta property="og:title" content="Invito Vincenzo & Maria">
     <meta property="og:description" content="Siete invitati alla nostra Promessa di Matrimonio - 15 Maggio 2026">
-    <!-- Sostituisci l'URL qui sotto con il link di una vostra foto su Cloudinary per l'anteprima -->
-    <meta property="og:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000">
+    <meta property="og:image" content="https://res.cloudinary.com/dittjewrb/image/upload/v1768954203/Invito_zwvew4.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:type" content="website">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -61,7 +63,6 @@
             }
         }
 
-        /* Sfondo Parallasse */
         .card-bg-image {
             position: absolute;
             top: -15%;
@@ -78,7 +79,6 @@
             pointer-events: none;
         }
 
-        /* Effetto superficie acqua */
         .water-surface {
             position: absolute;
             bottom: 0;
@@ -90,7 +90,6 @@
             pointer-events: none;
         }
 
-        /* Petali */
         .petal {
             position: absolute;
             background: linear-gradient(135deg, #d4af37, #f1d592);
@@ -107,53 +106,43 @@
             100% { top: var(--settle-top); transform: rotate(720deg) translateX(var(--drift)); opacity: 0.35; }
         }
 
-        @keyframes floatSettle {
-            0% { transform: rotate(720deg) translateX(var(--drift)) translateY(0); }
-            100% { transform: rotate(725deg) translateX(calc(var(--drift) + 8px)) translateY(-4px); }
-        }
-
-        /* Increspature dell'acqua (Ripples) */
-        .ripple {
-            position: absolute;
-            border: 1px solid var(--gold-light);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 4;
-            transform: translate(-50%, -50%) scale(0);
-            opacity: 0.4;
-            animation: rippleEffect 2.5s ease-out forwards;
-        }
-
-        @keyframes rippleEffect {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 0.5; }
-            100% { transform: translate(-50%, -50%) scale(5); opacity: 0; }
-        }
-
         /* Pulsante Musica */
         .music-btn {
             position: absolute;
             top: 20px;
             right: 20px;
-            width: 38px;
-            height: 38px;
-            background: rgba(255,255,255,0.85);
+            width: 42px;
+            height: 42px;
+            background: rgba(255,255,255,0.95);
             backdrop-filter: blur(4px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 110;
             cursor: pointer;
             border: 1px solid rgba(184, 146, 106, 0.3);
             color: var(--gold);
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .music-btn:hover {
             transform: scale(1.1);
             background: white;
-            box-shadow: 0 6px 15px rgba(184, 146, 106, 0.2);
+            box-shadow: 0 6px 16px rgba(184, 146, 106, 0.2);
+        }
+
+        .music-btn.is-playing {
+            background: var(--gold);
+            color: white;
+            animation: pulse-music 2s infinite;
+        }
+
+        @keyframes pulse-music {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         .fade-in-up {
@@ -186,144 +175,97 @@
         .surname { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; color: var(--gray); margin-top: 2px; }
         .ampersand { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; color: var(--gold); margin: 2px 0; }
 
-        /* Stile Pulsanti Azione */
+        /* Bottoni Interattivi */
         .btn-action {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             font-weight: 600;
-            padding: 10px 24px;
+            padding: 12px 24px;
             border-radius: 40px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             width: 100%;
-            max-width: 190px;
+            max-width: 200px;
             text-decoration: none !important;
-            position: relative;
             cursor: pointer;
             gap: 8px;
+            z-index: 60;
         }
         
         .btn-gold { 
             border: 2px solid var(--gold); 
             color: var(--gold); 
-            background: rgba(255, 255, 255, 0.6); 
-            animation: pulseGold 3s infinite;
+            background: rgba(255, 255, 255, 0.9); 
         }
 
         .btn-gold:hover {
             background: var(--gold);
             color: white !important;
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 20px rgba(184, 146, 106, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(184, 146, 106, 0.3);
         }
 
         .btn-rsvp { 
             background: var(--dark); 
             color: white !important; 
             border: none; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15); 
-            animation: pulseDark 3s infinite 1.5s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
         }
 
         .btn-rsvp:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-            background: #1a1e1f;
+            background: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
-        @keyframes pulseGold {
-            0% { box-shadow: 0 0 0 0 rgba(184, 146, 106, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(184, 146, 106, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(184, 146, 106, 0); }
-        }
-
-        @keyframes pulseDark {
-            0% { box-shadow: 0 0 0 0 rgba(45, 52, 70, 0.3); }
-            70% { box-shadow: 0 0 0 12px rgba(45, 52, 70, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(45, 52, 70, 0); }
-        }
-
-        /* Sezione IBAN */
         .iban-container {
             width: 100%;
             max-width: 320px;
             padding: 12px 10px;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(184, 146, 106, 0.2);
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
             position: relative;
         }
-        
-        .iban-container:hover {
-            background: rgba(255, 255, 255, 0.6);
-            border-color: var(--gold-light);
-        }
 
-        .iban-text {
-            font-size: 0.6rem;
-            color: var(--gold);
-            letter-spacing: 1px;
-            margin-bottom: 4px;
-            font-style: italic;
-            font-weight: 500;
-        }
-
-        .iban-owners {
-            font-size: 0.6rem;
-            color: var(--dark);
-            font-weight: 600;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-        }
+        .iban-owners { font-size: 0.65rem; color: var(--dark); font-weight: 600; margin-bottom: 6px; text-transform: uppercase; }
 
         .iban-code-wrapper {
-            background: rgba(255, 255, 255, 0.7);
-            padding: 8px;
+            background: white;
+            padding: 10px;
             border-radius: 12px;
             margin-bottom: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             transition: all 0.2s ease;
+            border: 1px solid transparent;
+            cursor: pointer;
         }
 
-        .iban-code-wrapper:active {
-            transform: scale(0.97);
-            background: white;
-        }
-
-        .iban-code {
-            font-family: monospace;
-            font-size: 0.6rem;
-            color: var(--dark);
-            letter-spacing: 0.5px;
+        .iban-code-wrapper:hover {
+            border-color: var(--gold);
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(184, 146, 106, 0.1);
         }
 
         .copy-btn {
             background: var(--gold);
             color: white;
             border: none;
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            flex-shrink: 0;
-        }
-
-        .copy-btn.copied {
-            background: #27ae60;
-            transform: scale(1.15);
         }
 
         #toast {
@@ -337,7 +279,7 @@
             border-radius: 30px;
             font-size: 0.8rem;
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s;
             z-index: 2000;
             pointer-events: none;
         }
@@ -353,8 +295,9 @@
         <div class="card-bg-image" id="bg-parallax"></div>
         <div class="water-surface"></div>
 
+        <!-- Pulsante Musica -->
         <div class="music-btn" id="music-btn" title="Riproduci musica">
-            <svg id="music-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg id="music-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M9 18V5l12-2v13"></path>
                 <circle cx="6" cy="18" r="3"></circle>
                 <circle cx="18" cy="16" r="3"></circle>
@@ -362,7 +305,7 @@
         </div>
 
         <div class="content-overlay">
-            <!-- Header -->
+            <!-- Intestazione -->
             <div class="fade-in-up">
                 <div style="width: 30px; height: 1px; background: var(--gold); margin: 0 auto 6px; opacity: 0.6;"></div>
                 <h2 style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 3px; color: var(--gold); font-weight: 600;">Promessa di Matrimonio</h2>
@@ -377,34 +320,25 @@
                 <div class="surname">Giardino</div>
             </div>
 
-            <!-- Location e Mappa -->
+            <!-- Info e Mappa -->
             <div class="w-full fade-in-up delay-2">
                 <div style="font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--dark); margin-bottom: 2px; font-weight: 700;">15 Maggio 2026 • 20:00</div>
-                <div style="font-size: 0.8rem; color: var(--gray); line-height: 1.4; margin-bottom: 8px;">Villa Santa Chiara, Casoria (NA)</div>
+                <div style="font-size: 0.8rem; color: var(--gray); margin-bottom: 12px;">Villa Santa Chiara, Casoria (NA)</div>
                 <a href="https://www.google.com/maps/search/?api=1&query=Villa+Santa+Chiara+Casoria" target="_blank" class="btn-action btn-gold mx-auto">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
                     Mappa
                 </a>
             </div>
 
-            <!-- Sezione IBAN -->
+            <!-- Regalo / IBAN -->
             <div class="iban-container fade-in-up delay-2">
-                <div class="iban-text">"Il nostro sogno ha bisogno di te"</div>
+                <div style="font-size: 0.6rem; color: var(--gold); font-style: italic; margin-bottom: 4px;">"Il nostro sogno ha bisogno di te"</div>
                 <div class="iban-owners">Vincenzo D’Alessandro & Maria Giardino</div>
                 
-                <div class="iban-code-wrapper" onclick="copyIban()" style="cursor: pointer;">
-                    <div class="iban-code" id="iban">IT54Y0366901600194072133188</div>
-                    <button class="copy-btn" id="copy-btn">
-                        <svg id="copy-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                    </button>
+                <div class="iban-code-wrapper" id="iban-copy-trigger">
+                    <div style="font-family: monospace; font-size: 0.6rem; color: var(--dark); font-weight: bold;" id="iban">IT54Y0366901600194072133188</div>
+                    <button class="copy-btn">📋</button>
                 </div>
-                <div style="font-size: 0.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; opacity: 0.8; font-weight: 600;">Tocca per copiare l'IBAN</div>
+                <div style="font-size: 0.5rem; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;">Tocca per copiare</div>
             </div>
 
             <!-- RSVP -->
@@ -424,103 +358,62 @@
         const musicIcon = document.getElementById('music-icon');
         const parallaxBg = document.getElementById('bg-parallax');
         const card = document.getElementById('card-container');
-        const copyBtn = document.getElementById('copy-btn');
-        const copyIcon = document.getElementById('copy-icon');
+        const ibanTrigger = document.getElementById('iban-copy-trigger');
 
-        // Effetto Parallasse desktop
+        // Path SVG per icone dinamiche
+        const musicPath = '<path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>';
+        const pausePath = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+
+        // Effetto Parallasse Sfondo
         document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth);
-            const y = (e.clientY / window.innerHeight);
-            const moveX = (x - 0.5) * 30;
-            const moveY = (y - 0.5) * 30;
-            if(parallaxBg) parallaxBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            if(parallaxBg) parallaxBg.style.transform = `translate(${x}px, ${y}px)`;
         });
 
-        // Gestione Musica
-        musicBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
+        // Gestione Musica e Icona
+        musicBtn.addEventListener('click', () => {
             if (audio.paused) {
-                audio.play().then(() => {
-                    musicBtn.style.background = 'var(--gold)';
-                    musicBtn.style.color = 'white';
-                    musicIcon.innerHTML = '<rect x="7" y="5" width="3" height="14"></rect><rect x="14" y="5" width="3" height="14"></rect>';
-                }).catch(err => console.log("Audio play blocked"));
+                audio.play().catch(() => {});
+                musicBtn.classList.add('is-playing');
+                musicIcon.innerHTML = pausePath;
             } else {
                 audio.pause();
-                musicBtn.style.background = 'rgba(255,255,255,0.85)';
-                musicBtn.style.color = 'var(--gold)';
-                musicIcon.innerHTML = '<path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>';
+                musicBtn.classList.remove('is-playing');
+                musicIcon.innerHTML = musicPath;
             }
         });
 
-        // Ripples nell'acqua
-        function createRipple(x, y) {
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
-            card.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 2500);
-        }
-
-        // Sistema Petali
-        function createPetal() {
-            const petal = document.createElement('div');
-            petal.className = 'petal';
-            const size = Math.random() * 7 + 5 + 'px';
-            petal.style.width = size; petal.style.height = size;
-            
-            const cardWidth = card.clientWidth;
-            const startX = Math.random() * (cardWidth - 20);
-            petal.style.left = startX + 'px';
-            
-            const duration = Math.random() * 3 + 6;
-            const driftVal = (Math.random() - 0.5) * 70;
-            const settleTopVal = (94 + Math.random() * 2);
-            
-            petal.style.setProperty('--settle-top', settleTopVal + '%');
-            petal.style.setProperty('--drift', driftVal + 'px');
-            petal.style.animation = `fallInside ${duration}s linear forwards`;
-
-            card.appendChild(petal);
-
-            setTimeout(() => {
-                const finalX = startX + driftVal;
-                const finalY = (card.clientHeight * settleTopVal) / 100;
-                createRipple(finalX, finalY);
-                petal.style.animation = `floatSettle 4s ease-in-out infinite alternate`;
-            }, duration * 1000);
-
-            setTimeout(() => {
-                petal.style.opacity = '0';
-                setTimeout(() => petal.remove(), 1000);
-            }, 15000);
-        }
-
-        setInterval(createPetal, 2000);
-
-        // Copia IBAN
-        function copyIban() {
-            const iban = document.getElementById('iban').innerText;
-            const temp = document.createElement('textarea');
-            temp.value = iban;
-            document.body.appendChild(temp);
-            temp.select();
+        // Copia IBAN con Toast
+        ibanTrigger.addEventListener('click', () => {
+            const ibanText = document.getElementById('iban').innerText;
+            const tempInput = document.createElement('textarea');
+            tempInput.value = ibanText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
             document.execCommand('copy');
-            document.body.removeChild(temp);
-            
-            copyBtn.classList.add('copied');
-            copyIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+            document.body.removeChild(tempInput);
             
             const toast = document.getElementById('toast');
             toast.style.opacity = '1';
-            
-            setTimeout(() => { 
-                toast.style.opacity = '0'; 
-                copyBtn.classList.remove('copied');
-                copyIcon.innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>';
-            }, 2000);
+            setTimeout(() => toast.style.opacity = '0', 2000);
+        });
+
+        // Animazione Petali
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            const size = (Math.random() * 8 + 4) + 'px';
+            petal.style.width = size;
+            petal.style.height = size;
+            petal.style.left = Math.random() * 100 + '%';
+            petal.style.setProperty('--settle-top', (93 + Math.random() * 3) + '%');
+            petal.style.setProperty('--drift', ((Math.random() - 0.5) * 60) + 'px');
+            petal.style.animation = `fallInside ${Math.random() * 4 + 6}s linear forwards`;
+            card.appendChild(petal);
+            setTimeout(() => petal.remove(), 11000);
         }
+        setInterval(createPetal, 3000);
     </script>
 </body>
 </html>
